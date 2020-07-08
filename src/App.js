@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import './App.css'
-import reducer from './reducer'
+import generateStore from './redux/store'
 import ActionList from './components/action-list'
 import Header from './components/header'
 import CountryPage from './components/country-page'
 import CountryList from './components/country-list'
 
-const initialState = {
-	countryList: [],
-	countryListByName: [],
-	coutryFilteredByRegion: [],
-	filterByRegion: '',
-}
-
-const store = createStore(reducer, initialState)
+const store = generateStore()
 
 function App() {
 	const [darkMode, setDarkMode] = useState(false)

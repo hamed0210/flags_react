@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { getFlagsAction } from '../redux/flagsDucks'
 import styled from 'styled-components'
 import Country from './country'
 
@@ -18,31 +19,23 @@ const CountryListStyled = styled.div`
 const CountryList = () => {
 	const dispatch = useDispatch()
 
-	const countryListByName = useSelector((state) => state.countryListByName)
+	const countryListByName = useSelector(
+		(store) => store.flags.countryListByName
+	)
 
-	const countryList = useSelector((state) => {
-		if (state.filterByRegion !== '' && countryListByName.length === 0) {
-			return state.coutryFilteredByRegion
+	const countryList = useSelector((store) => {
+		if (store.flags.filterByRegion !== '' && countryListByName.length === 0) {
+			return store.flags.coutryFilteredByRegion
 		}
 		if (countryListByName.length > 0) {
 			return countryListByName
 		}
 
-		return state.countryList
+		return store.flags.countryList
 	})
 
 	useEffect(() => {
-		fetch('https://restcountries.eu/rest/v2/all')
-			.then((res) => res.json())
-			.then((data) =>
-				dispatch({
-					type: 'SET_COUNTRY_LIST',
-					payload: data,
-				})
-			)
-			.catch((err) => {
-				console.log(err)
-			})
+		dispatch(getFlagsAction())
 	}, [dispatch])
 
 	//const [countryList, setCountryList] = useState([]);
